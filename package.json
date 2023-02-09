@@ -1,0 +1,27 @@
+{
+  "name": "sistemapp",
+  "version": "1.0.0",
+  "description": "App gestão de softwares",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/carlosomarcel/sistemagestao.git"
+  },
+  "keywords": [],
+  "author": "Carlos Marcel",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/carlosomarcel/sistemagestao/issues"
+  },
+  "homepage": "https://github.com/carlosomarcel/sistemagestao#readme",
+  "dependencies": {
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  }
+}
