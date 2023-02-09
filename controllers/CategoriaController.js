@@ -80,7 +80,7 @@ export default {
 
 // --------------------------- Ativos  ------------------------
 
-  activete: async (req, res, next) => {
+  activate: async (req, res, next) => {
     try {
         const reg = await models.Categoria.findByIdAndUpdate({_id:req.body._id}, {estado:1});
         res.status(200).json(reg);
