@@ -22,7 +22,7 @@ app.use(urlencoded({extended:true}))
 app.use(express.static(path.join(__dirname, 'public')))
 
 app.use('/api', router);
-app.set('port', process.env.PORT || 8080);
+app.set('port', process.env.PORT || 3000);
 
 
 app.listen(app.get('port'), () => {
