@@ -40,7 +40,10 @@ export default {
 
   list: async (req, res, next) => {
     try {
-        const reg = await models.Categoria.find({});       
+      let valor = req.query.valor;
+      // filtrando a busca
+        const reg = await models.Categoria.find({$or:[{'nome':new RegExp(valor,'i')},{'descricao':new RegExp(valor,'i')}]},{criacao:0})
+        .sort({'criacao':-1});       
             res.status(200).send(reg);
     } catch (e) {
       res.status(500).send({
@@ -80,29 +83,29 @@ export default {
 
 // --------------------------- Ativos  ------------------------
 
-  activate: async (req, res, next) => {
-    try {
-        const reg = await models.Categoria.findByIdAndUpdate({_id:req.body._id}, {estado:1});
-        res.status(200).json(reg);
-    } catch (e) {
+activate: async (req,res,next) => {
+  try {
+      const reg = await models.Categoria.findByIdAndUpdate({_id:req.body._id},{estado:1});
+      res.status(200).json(reg);
+  } catch(e){
       res.status(500).send({
-        message: "Ocorreu um erro",
+          message:'Ocorreu um erro'
       });
       next(e);
-    }
-  },
+  }
+},
 
 // --------------------------- Desativados ------------------------
 
-  deactivate: async (req, res, next) => {
-    try {
-        const reg = await models.Categoria.findByIdAndUpdate({_id:req.body._id}, {estado:0});
-        res.status(200).json(reg);
-    } catch (e) {
+deactivate:async (req,res,next) => {
+  try {
+      const reg = await models.Categoria.findByIdAndUpdate({_id:req.body._id},{estado:0});
+      res.status(200).json(reg);
+  } catch(e){
       res.status(500).send({
-        message: "Ocorreu um erro",
+          message:'Ocorreu um erro'
       });
       next(e);
-    }
-  },
-};
+  }
+}
+}
