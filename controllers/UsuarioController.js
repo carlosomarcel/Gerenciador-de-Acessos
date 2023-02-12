@@ -1,11 +1,14 @@
 import models from "../models";
+import bcrypt from 'bcryptjs';
 
 // --------------------------- Registrando no Banco------------------------
 
 export default {
   add: async (req, res, next) => {
     try {
-      const reg = await models.Categoria.create(req.body);
+        // criptografando a senha
+      req.body.password = await bcrypt.hash(req.body.password,10);
+      const reg = await models.Usuario.create(req.body);
       res.status(200).json(reg);
     } catch (e) {
       res.status(500).send({
@@ -19,7 +22,7 @@ export default {
 
   query: async (req, res, next) => {
     try {
-        const reg = await models.Categoria.findOne({_id:req.query._id});
+        const reg = await models.Usuario.findOne({_id:req.query._id});
         if (!reg){
             res.status(404).send({
                 message:"Registro não existe"
@@ -42,7 +45,7 @@ export default {
     try {
       let valor = req.query.valor;
       // filtrando a busca
-        const reg = await models.Categoria.find({$or:[{'nome':new RegExp(valor,'i')},{'descricao':new RegExp(valor,'i')}]},{criacao:0})
+        const reg = await models.Usuario.find({$or:[{'nome':new RegExp(valor,'i')},{'email':new RegExp(valor,'i')}]},{criacao:0})
         .sort({'criacao':-1});       
             res.status(200).send(reg);
     } catch (e) {
@@ -57,7 +60,17 @@ export default {
 
   update: async (req, res, next) => {
     try {
-        const reg = await models.Categoria.findByIdAndUpdate({_id:req.body._id},{nome:req.body.nome, descricao:req.body.descricao});
+      // criptografando o updade da senha
+      let pas = req.body.password;
+
+      const reg0 = await models.Usuario.findOne({_id:req.body._id});
+
+      if(pas!=reg0.password){      
+        req.body.password = await bcrypt.hash(req.body.password,10);
+      }
+     
+        const reg = await models.Usuario.findByIdAndUpdate({_id:req.body._id},{role:req.body.role,nome:req.body.nome, tipo_documento:req.body.tipo_documento,
+           num_documento:req.body.num_documento,direcao:req.body.direcao, telefone:req.body.telefone, email:req.body.email, password:req.body.password});
         res.status(200).json(reg);
     } catch (e) {
       res.status(500).send({
@@ -71,7 +84,7 @@ export default {
 
   remove: async (req, res, next) => {
     try {
-        const reg = await models.Categoria.findOneAndDelete({_id:req.body._id});
+        const reg = await models.Usuario.findOneAndDelete({_id:req.body._id});
         res.status(200).json(reg);
     } catch (e) {
       res.status(500).send({
@@ -85,7 +98,7 @@ export default {
 
 activate: async (req,res,next) => {
   try {
-      const reg = await models.Categoria.findByIdAndUpdate({_id:req.body._id},{estado:1});
+      const reg = await models.Usuario.findByIdAndUpdate({_id:req.body._id},{estado:1});
       res.status(200).json(reg);
   } catch(e){
       res.status(500).send({
@@ -99,7 +112,7 @@ activate: async (req,res,next) => {
 
 deactivate:async (req,res,next) => {
   try {
-      const reg = await models.Categoria.findByIdAndUpdate({_id:req.body._id},{estado:0});
+      const reg = await models.Usuario.findByIdAndUpdate({_id:req.body._id},{estado:0});
       res.status(200).json(reg);
   } catch(e){
       res.status(500).send({
