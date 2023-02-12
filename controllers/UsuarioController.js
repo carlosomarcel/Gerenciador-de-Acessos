@@ -120,5 +120,35 @@ deactivate:async (req,res,next) => {
       });
       next(e);
   }
+},
+login: async (req,res,next) =>{
+    try {
+        let user = await models.Usuario.findOne({email:req.body.email});
+
+        if (user){
+          //existe um usuario com esse email
+          let match = await bcrypt.compare(req.body.password, user.password);
+          if (match){
+            res.json('Senha correta');
+          }else{
+            res.status(404).send({
+              message: 'Senha incorreta'
+            });
+
+          }
+
+        }else{
+          res.status(404).send({
+            message: 'Não existe o usuário'
+          });
+        }
+
+
+    } catch(e){
+      res.status(500).send({
+          message:'Ocorreu um erro'
+      });
+
+    }
 }
 }
