@@ -1,11 +1,11 @@
 import routerx from "express-promise-router";
 import categoriaRouter from './categoria';
-import ArtigoRouter from './artigo'
+import artigoRouter from './artigo'
 
 const router = routerx();
 
 router.use('/categoria', categoriaRouter);
-router.use('/artigo', ArtigoRouter);
+router.use('/artigo', artigoRouter);
 
 
 export default router;
