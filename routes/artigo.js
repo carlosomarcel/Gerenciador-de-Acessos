@@ -1,14 +1,16 @@
 import routerx from "express-promise-router";
 import artigoController from "../controllers/ArtigoController";
+import auth from "../middlewares/auth";
+
 
 const router = routerx();
 
-router.post("/add", artigoController.add);
-router.get("/query", artigoController.query);
-router.get("/list", artigoController.list);
-router.put("/update", artigoController.update);
-router.delete("/remove", artigoController.remove);
-router.put("/activate", artigoController.activate);
-router.put("/deactivate", artigoController.deactivate);
+router.post("/add",auth.verifyMarceneiro, artigoController.add);
+router.get("/query",auth.verifyMarceneiro, artigoController.query);
+router.get("/list",auth.verifyMarceneiro, artigoController.list);
+router.put("/update",auth.verifyMarceneiro, artigoController.update);
+router.delete("/remove",auth.verifyMarceneiro, artigoController.remove);
+router.put("/activate",auth.verifyMarceneiro, artigoController.activate);
+router.put("/deactivate",auth.verifyMarceneiro, artigoController.deactivate);
 
 export default router;
