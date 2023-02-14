@@ -2,15 +2,18 @@ import models from '../models';
 
 
 async function aumentarEstoque(idartigo,quantidade){
-    let {estoque}=await models.Artigo.findOne({_id:artigo});
+    let {estoque}=await models.Artigo.findOne({_id:idartigo});
+    // Aumenta quantidade de estoque somando estoque  = quantidade
     let nEstoque=parseInt(estoque)+parseInt(quantidade);
+    // id do artigo que vai ser atualizado 
     const reg=await models.Artigo.findByIdAndUpdate({_id:idartigo},{estoque:nEstoque});
 }
 
 async function diminuirEstoque(idartigo,qua){
-    let {estoque}=await models.artigo.findOne({_id:idartigo});
+    let {estoque}=await models.Artigo.findOne({_id:idartigo});
+    // Diminuir quantidade de estoque somando estoque  = quantidade
     let nestoque=parseInt(estoque)-parseInt(quantidade);
-    const reg=await models.artigo.findByIdAndUpdate({_id:idartigo},{estoque:nestoque});
+    const reg=await models.Artigo.findByIdAndUpdate({_id:idartigo},{estoque:nestoque});
 }
 
 export default {
@@ -20,7 +23,7 @@ export default {
             //Atualiza estoque
             let detalhes=req.body.detalhes;
             detalhes.map(function(x){
-                aumentarestoque(x._id,x.quantidade);
+                aumentarEstoque(x._id,x.quantidade);
             });
             res.status(200).json(reg);
         } catch (e){
@@ -94,7 +97,7 @@ export default {
             //Atualizar estoque
             let detalhes=reg.detalhes;
             detalhes.map(function(x){
-                aumentarestoque(x._id,x.quantidade);
+                aumentarEstoque(x._id,x.quantidade);
             });
             res.status(200).json(reg);
         } catch(e){
@@ -110,7 +113,7 @@ export default {
             //Atualizar estoque
             let detalhes=reg.detalhes;
             detalhes.map(function(x){
-                diminuirestoque(x._id,x.quantidade);
+                diminuirEstoque(x._id,x.quantidade);
             });
             res.status(200).json(reg);
         } catch(e){
