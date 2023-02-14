@@ -94,7 +94,7 @@ export default {
             { nome: new RegExp(valor, "i") },
             { email: new RegExp(valor, "i") },
           ],
-          tipo_pessoa: "fornecedores",
+          tipo_pessoa: "fornecedor",
         },
         { criacao: 0 }
       ).sort({ criacao: -1 });
