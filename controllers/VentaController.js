@@ -19,11 +19,11 @@ async function diminuirEstoque(idartigo,quantidade){
 export default {
     add: async (req,res,next) =>{
         try {
-            const reg = await models.Boleto.create(req.body);
+            const reg = await models.Venda.create(req.body);
             //Atualiza estoque
             let detalhes=req.body.detalhes;
             detalhes.map(function(x){
-                aumentarEstoque(x._id,x.quantidade);
+                diminuirEstoque(x._id,x.quantidade);
             });
             res.status(200).json(reg);
         } catch (e){
@@ -35,7 +35,7 @@ export default {
     },
     query: async (req,res,next) => {
         try {
-            const reg=await models.Boleto.findOne({_id:req.query._id})
+            const reg=await models.Venda.findOne({_id:req.query._id})
             .populate('usuario',{nome:1})
             .populate('pessoa',{nome:1});
             if (!reg){
@@ -55,7 +55,7 @@ export default {
     list: async (req,res,next) => {
         try {
             let valor=req.query.valor;
-            const reg=await models.Boleto.find({$or:[{'num_comprovante':new RegExp(valor,'i')},{'serie_comprovante':new RegExp(valor,'i')}]})
+            const reg=await models.Venda.find({$or:[{'num_comprovante':new RegExp(valor,'i')},{'serie_comprovante':new RegExp(valor,'i')}]})
             .populate('usuario',{nome:1})
             .populate('pessoa',{nome:1})
             .sort({'criacao':-1});
@@ -93,11 +93,11 @@ export default {
     */
     activate: async (req,res,next) => {
         try {
-            const reg = await models.Boleto.findByIdAndUpdate({_id:req.body._id},{estado:1});
+            const reg = await models.Venda.findByIdAndUpdate({_id:req.body._id},{estado:1});
             //Atualizar estoque
             let detalhes=reg.detalhes;
             detalhes.map(function(x){
-                aumentarEstoque(x._id,x.quantidade);
+                diminuirEstoque(x._id,x.quantidade);
             });
             res.status(200).json(reg);
         } catch(e){
@@ -109,11 +109,11 @@ export default {
     },
     deactivate:async (req,res,next) => {
         try {
-            const reg = await models.Boleto.findByIdAndUpdate({_id:req.body._id},{estado:0});
+            const reg = await models.Venda.findByIdAndUpdate({_id:req.body._id},{estado:0});
             //Atualizar estoque
             let detalhes=reg.detalhes;
             detalhes.map(function(x){
-                diminuirEstoque(x._id,x.quantidade);
+                aumentarEstoque(x._id,x.quantidade);
             });
             res.status(200).json(reg);
         } catch(e){
