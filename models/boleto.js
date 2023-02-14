@@ -4,7 +4,7 @@ import mongoose,{Schema} from 'mongoose';
 const boletoSchema = new Schema({
     usuario:{type: Schema.ObjectId, ref: 'usuario',required:true },
     pessoa:{ type: Schema.ObjectId, ref: 'pessoa',required:true },
-    tipo_comprobante:{ type:String,maxlength:20,required:true},
+    tipo_comprovante:{ type:String,maxlength:20,required:true},
     serie_comprovante: { type:String,maxlength:7},
     num_comprovante: { type:String,maxlength:10,required:true},
     imposto:{ type:Number, required:true},

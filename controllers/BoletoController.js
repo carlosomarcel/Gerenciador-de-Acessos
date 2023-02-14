@@ -9,11 +9,11 @@ async function aumentarEstoque(idartigo,quantidade){
     const reg=await models.Artigo.findByIdAndUpdate({_id:idartigo},{estoque:nEstoque});
 }
 
-async function diminuirEstoque(idartigo,qua){
+async function diminuirEstoque(idartigo,quantidade){
     let {estoque}=await models.Artigo.findOne({_id:idartigo});
     // Diminuir quantidade de estoque somando estoque  = quantidade
-    let nestoque=parseInt(estoque)-parseInt(quantidade);
-    const reg=await models.Artigo.findByIdAndUpdate({_id:idartigo},{estoque:nestoque});
+    let nEstoque=parseInt(estoque)-parseInt(quantidade);
+    const reg=await models.Artigo.findByIdAndUpdate({_id:idartigo},{estoque:nEstoque});
 }
 
 export default {
