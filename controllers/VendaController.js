@@ -122,5 +122,38 @@ export default {
             });
             next(e);
         }
+    },
+    // Grafico de 12 meses 
+    grafico12Meses: async(req,res, next) =>{
+        try {
+            const reg = await models.Venda.aggregate(
+                [
+                    {
+                        $group:{
+                            _id:{
+                                mes:{$month:"$criacao"},
+                                year:{$year:"$criacao"}
+                            },
+                            total:{$sum:"$total"},
+                            numero:{$sum:1}
+                            }
+                        
+                    },
+                    {
+                        $sort:{
+                            "_id.year":-1,"_id.mes":-1
+                        }
+                    }
+                ]
+            ).limit(12);
+
+            res.status(200).json(reg);            
+        } catch(e){
+            res.status(500).send({
+                message:'Ocorreu um erro'
+            });
+            next(e);
+        }
+
     }
 }
