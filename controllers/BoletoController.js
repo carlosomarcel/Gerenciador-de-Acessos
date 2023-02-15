@@ -155,5 +155,21 @@ export default {
             next(e);
         }
 
-    }
+    },
+    consultaDatas: async (req,res,next) => {
+        try {
+            let start = req.query.start;
+            let end = req.query.end;
+            const reg=await models.Boleto.find({"criado":{"$gte":start, "$lt": end}})
+            .populate('usuario',{nome:1})
+            .populate('pessoa',{nome:1})
+            .sort({'criacao':-1});
+            res.status(200).json(reg);
+        } catch(e){
+            res.status(500).send({
+                message:'Ocorreu um erro'
+            });
+            next(e);
+        }
+    },
 }

@@ -7,6 +7,7 @@ const router = routerx();
 router.post('/add', auth.verifyMarceneiro, boletoController.add);
 router.get('/query', auth.verifyMarceneiro, boletoController.query);
 router.get('/list', auth.verifyMarceneiro, boletoController.list);
+router.get('/consultadatas', auth.verifyUsuario, boletoController.consultaDatas);
 router.get('/grafico12meses', auth.verifyUsuario, boletoController.grafico12Meses);
 //router.put('/update', auth.verifyMarceneiro, boletoController.update);
 //router.delete('/remove', auth.verifyMarceneiro, boletoController.remove);
